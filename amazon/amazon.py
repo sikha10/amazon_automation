@@ -132,12 +132,11 @@ class Amazon(webdriver.Chrome):
         # find next button and click until it will become page variable number
         pages_attribute = self.find_element(
             By.CSS_SELECTOR, 'span[class="s-pagination-item s-pagination-selected"]').get_attribute('innerHTML')
-        self.report()
         while int(pages_attribute) != pages:
-            next_button = self.find_element(By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"]')
-            next_button.click()
             pages_attribute = self.find_element(
                 By.CSS_SELECTOR, 'span[class="s-pagination-item s-pagination-selected"]').get_attribute('innerHTML')
             self.report()
+            next_button = self.find_element(By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"]')
+            next_button.click()
             time.sleep(3)
 
