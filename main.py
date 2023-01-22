@@ -1,7 +1,11 @@
 from amazon.amazon import Amazon
 import time
+from selenium import webdriver
 
-with Amazon() as bot:
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
+with Amazon(options=options) as bot:
     bot.first_page()
     bot.search_product(input("what product do you want: "))
     bot.filter_high_to_low()

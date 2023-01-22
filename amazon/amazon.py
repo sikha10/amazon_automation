@@ -6,9 +6,8 @@ from prettytable import PrettyTable
 
 
 class Amazon(webdriver.Chrome):
-    def __init__(self, teardown=False, driver='D:\selenium chromedriver\chromedriver.exe'):
-        super(Amazon, self).__init__()
-        self.driver = driver
+    def __init__(self, options, teardown=False):
+        super(Amazon, self).__init__(options=options)
         self.teardown = teardown
         self.set_window_position(2000, 0)
         self.maximize_window()
@@ -111,12 +110,8 @@ class Amazon(webdriver.Chrome):
     def print_last_page(self):
         self.implicitly_wait(3)
         page_parent_element = self.find_element(By.CSS_SELECTOR, 'div[class="s-widget-container s-spacing-medium s-widget-container-height-medium celwidget slot=MAIN template=PAGINATION widgetId=pagination-button"]')
-        try:
-            last_page = page_parent_element.find_element(
-            By.CSS_SELECTOR, 'span[class="s-pagination-item s-pagination-disabled"]').get_attribute('innerHTML')
-        except:
-            last_page = page_parent_element.find_element(
-                By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-button"]').get_attribute('innerHTML')
+        last_page = page_parent_element.find_elements(
+            By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-button"]')[-1].get_attribute('innerHTML')
         print(f'last page is: {last_page}')
 
     def go_to_page(self, pages: int = 1):
@@ -136,7 +131,11 @@ class Amazon(webdriver.Chrome):
             pages_attribute = self.find_element(
                 By.CSS_SELECTOR, 'span[class="s-pagination-item s-pagination-selected"]').get_attribute('innerHTML')
             self.report()
-            next_button = self.find_element(By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"]')
+            try:
+                next_button = self.find_element(By.CSS_SELECTOR, 'a[class="s-pagination-item s-pagination-next s-pagination-button s-pagination-separator"]')
+            except:
+                pass    
+
             next_button.click()
             time.sleep(3)
 
